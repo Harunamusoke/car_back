@@ -49,5 +49,32 @@ $config = array(
 			"label" => "password",
 			"rules" => "required"
 		)
+	),
+	"rates" => array(
+		array(
+			"field" => "name",
+			"label" => "name",
+			"rules" => "required|alpha_numeric|is_unique[rates.name]"
+		),
+		array(
+			"field" => "rate",
+			"label" => "rate",
+			"rules" => "numeric"
+		),
+		array(
+			"field" => "from",
+			"label" => "start",
+			"rules" => "numeric"
+		),
+		array(
+			"field" => "to",
+			"label" => "end",
+			"rules" => "numeric"
+		),
+		array(
+			"field" => "is_enabled",
+			"label" => "status",
+			"rules" => "required|exact_length[1]|numeric"
+		)
 	)
 );

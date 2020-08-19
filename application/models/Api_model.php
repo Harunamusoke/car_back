@@ -44,4 +44,14 @@ class Api_model extends CI_Model
 
 	}
 
+	public function add_rate(  $name, $rate, $from, $to, $is_enabled ){
+		$rateData = array(
+			"name" => $name,
+			"rate" => $rate, "from" => $from,
+			"to" => $to, "is_enabled" => $is_enabled, "date_added" => date("Y-m-d H:i:s")
+		);
+		$this->db->insert("rates",$rateData);
+		return $this->db->insert_id();
+	}
+
 }
