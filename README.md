@@ -13,11 +13,11 @@ message is returned.
 
 FRONTEND
 
- The code contains a register which talks with the backend and displays a error if
+ The code contains a register which talks with the backend and displays an error if
 anything occurs .
 NOTE:::
 After successful register , the user has to be activated . So currently manually
-activated the user.
+activate the user.
 
 --Login
 BACKEND
@@ -42,7 +42,7 @@ The backend contains a lot of apis to deal with the
  USERS -- /api/users
 
 Note :::: All those api require the X_PARK_USER header which is the web token sent by
-the backend
+the backend on successful login
 
 SCRIPTS FOR TEST DATABASE
 VEHICLES
