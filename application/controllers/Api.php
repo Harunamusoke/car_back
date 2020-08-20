@@ -111,6 +111,32 @@ class Api extends REST_Controller
 		$this->response(["error" => "invalid format", "data" => null], REST_Controller::HTTP_NOT_FOUND);
 	}
 
+
+	public function  users_activate_get( $id , $status){
+
+		$user = $this->db->get_where( "users" , ['user_id' => $id ] )->row_array();
+		if( empty( $user) )
+			$this->response( [ "error" => "user not found" , "data" => null ] , REST_Controller::HTTP_BAD_REQUEST );
+
+
+		$array  = array(
+
+		);
+
+		if( $status == 1 ){
+			$array['is_active'] = 1;
+			$array["created_by"] = $this->id;
+		}
+		else
+			$array['is_active'] = 0;
+
+		$this->db->where( "user_id" , $id );
+		$this->db->update("users", $array );
+
+		$this->response( [ "data" => "user status success" , "error" => null ] , REST_Controller::HTTP_OK);
+
+	}
+
 	public function rates_get()
 	{
 
@@ -123,8 +149,8 @@ class Api extends REST_Controller
 				$this->handle_rate_activity($rateArray['id'], $rateArray['is_enabled']);
 				$array = ["id" => $rateArray['id']];
 				$this->response(
-					["data" => $array, "info" => "updated success" , "error" => null
-				],REST_Controller::HTTP_OK);
+					["data" => $array, "info" => "updated success", "error" => null
+					], REST_Controller::HTTP_OK);
 
 			} catch (Exception $th) {
 				$this->response(["data" => null, "error" => "failed to update."],
@@ -143,7 +169,8 @@ class Api extends REST_Controller
 
 	public function slots_get()
 	{
-
+		$data = $this->db->get("slots")->result_array();
+		$this->response(["data" => $data, "error" => null], REST_Controller::HTTP_OK);
 
 	}
 
