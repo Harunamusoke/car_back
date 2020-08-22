@@ -60,8 +60,6 @@ class Auth extends REST_Controller
 	// http://[domain]/park/auth/login?password=[password]&email=[email]
 	public function login_get()
 	{
-		if (isset($_GET['user']))
-			return $this->user_session($this->input->get("user"));
 
 		$data = $this->input->get();
 		if (empty($data))
@@ -103,23 +101,6 @@ class Auth extends REST_Controller
 			$data[$key] = $this->security->xss_clean($value);
 
 		return $data;
-	}
-
-	// http://localhost/park/auth/user_session?user=[token]
-	private function user_session($session_token)
-	{
-
-		if ($session_token == null)
-			$this->response(['errors' => "user token failed", "user" => null]);
-
-		$user = null;
-		try {
-			$user = AUTHORIZATION::validateToken($session_token);
-		} catch (Exception $ex) {
-			$this->response(["error" => $ex->getMessage(), "user" => null], REST_Controller::HTTP_NOT_FOUND);
-		}
-
-		$this->response(["user" => AUTHORIZATION::generateToken($user)], REST_Controller::HTTP_OK);
 	}
 
 	/**

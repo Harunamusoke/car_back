@@ -2194,7 +2194,7 @@ abstract class REST_Controller extends CI_Controller {
         else
         {
             // We're going to allow only certain domains access
-            // Store the HTTP Origin header
+            // Mobile the HTTP Origin header
             $origin = $this->input->server('HTTP_ORIGIN');
             if ($origin === NULL)
             {

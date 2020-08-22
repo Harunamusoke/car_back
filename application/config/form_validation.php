@@ -76,5 +76,17 @@ $config = array(
 			"label" => "status",
 			"rules" => "required|exact_length[1]|numeric"
 		)
+	),
+	"vehicle" => array(
+		array(
+			"field" => "license",
+			"label" => "license",
+			"rules" => "required|alpha_numeric|is_unique[vehicles.license_plate]"
+		),
+		array(
+			"field" => "name",
+			"label" => "name",
+			"rules" => "required|alpha_numeric"
+		)
 	)
 );
