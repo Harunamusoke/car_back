@@ -73,12 +73,11 @@ class MModel extends CI_Model
 		} catch (Exception $ex) {
 			return ["error" => "transcation could not be initiated", "value" => null];
 		}
-
 		$data = array(
 			"park_id" => $parkid,
 			"number" => $number,
 			"amount" => $amount,
-			"date_initiated" => date("Y-md H:i:s"),
+			"date_initiated" => date("Y-m-d H:i:s"),
 			"external_ref" => $ref['external'],
 			"status" => 0
 		);
@@ -122,7 +121,7 @@ class MModel extends CI_Model
 	public function complete_payment($payid, $status)
 	{
 		$array = array(
-			"date_completed" => date("Y-m-d H:id:s"),
+			"date_completed" => date("Y-m-d H:i:s"),
 			"status" => $status
 		);
 		$this->db->where(["pay_id" => $payid]);

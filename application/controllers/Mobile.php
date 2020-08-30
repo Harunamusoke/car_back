@@ -24,7 +24,7 @@ class Mobile extends REST_Controller
 			if (!isset($vehicle->vehicle))
 				$this->response(["error" => "invalid token", "data" => null], REST_Controller::HTTP_BAD_REQUEST);
 
-			$this->processParking($vehicle);
+			$this->processParking($vehicle->vehicle);
 			return;
 		}
 
@@ -88,16 +88,16 @@ class Mobile extends REST_Controller
 				$this->response(["error" => "number is required", "data" => null], Rest_Controller::HTTP_BAD_REQUEST);
 
 			$number = $this->input->get("number");
-			if (strlen($number != 12))
+			if (strlen($number) != 12)
 				$this->response(["error" => "number is not a tel number", "data" => null], Rest_Controller::HTTP_BAD_REQUEST);
 
-			//$parkid, $user, $amount, $number
-			$pay = $this->mModel->finish_with_mm($token->park, $detail['pay'], $number);
+			//$parkid,  $amount, $number
+			$pay = $this->mModel->finish_with_mm($token->park, $detail['pay'], (int) $number);
 			if ($pay['error'] != null)
-				$this->response(["error" => $pay['"error'], "wait" => null], REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+				$this->response(["error" => $pay['error'], "wait" => null], REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
 
 			$wait = array(
-				"pay" => $pay,
+				"pay" => $pay['value'],
 				"user" => $this->id
 			);
 			$this->response(["data" => AUTHORIZATION::generateToken($wait), "error" => null], Rest_Controller::HTTP_CREATED);
@@ -127,6 +127,7 @@ class Mobile extends REST_Controller
 			$this->response(["error" => "no resource to confirm", "data" => null], Rest_Controller::HTTP_BAD_REQUEST);
 
 		$token = $this->checkToken($this->input->get("token"));
+
 		if (!isset($token->pay))
 			$this->response(["error" => "unknown token, please try again with a valid one", "data" => null], Rest_Controller::HTTP_BAD_REQUEST);
 
@@ -164,7 +165,7 @@ class Mobile extends REST_Controller
 			"park" => $park
 		));
 
-		$this->response(["data" => ["token" => $token], "error" => null], REST_Controller::HTTP_OK);
+		$this->response(["data" => $token, "error" => null], REST_Controller::HTTP_OK);
 	}
 
 	private function checkToken($token)
